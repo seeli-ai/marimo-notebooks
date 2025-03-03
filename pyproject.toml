@@ -1,0 +1,4 @@
+[tool.marimo.datasources]
+auto_discover_schemas = true   # Default: true
+auto_discover_tables = true   # Default: false - enable for table auto-discovery
+auto_discover_columns = true  # Default: false - enable for column auto-discovery

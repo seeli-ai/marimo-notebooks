@@ -1,1 +1,7 @@
 python-dotenv
+marimo
+sqlmodel
+yfinance
+pandas
+ta
+marimo[sql]
