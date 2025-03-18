@@ -342,5 +342,53 @@ def _(engine, mo, trade):
     return
 
 
+@app.cell
+def _(engine, mo):
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from scipy import stats
+
+    # Fetch data from the trade table
+    scatter_data = mo.sql(
+        """
+        SELECT gap_in_atr, profit_original FROM trade
+        WHERE gap_in_atr IS NOT NULL AND profit_original IS NOT NULL
+        """,
+        engine=engine
+    )
+
+    # Create the scatter plot
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    x = scatter_data['gap_in_atr']
+    y = scatter_data['profit_original']
+
+    # Plot scatter points
+    ax.scatter(x, y, alpha=0.7, label="Data Points")
+
+    # Add regression line if there are enough points
+    if len(x) > 1:
+        slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+        line_x = np.array([min(x), max(x)])
+        line_y = slope * line_x + intercept
+        ax.plot(line_x, line_y, 'r-', label=f'Regression line (r={r_value:.2f})')
+
+        # Add annotation with regression equation
+        equation = f'y = {slope:.2f}x + {intercept:.2f}'
+        ax.annotate(equation, xy=(0.05, 0.95), xycoords='axes fraction',
+                    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
+
+    # Add labels and title
+    ax.set_xlabel('Gap in ATR')
+    ax.set_ylabel('Original Profit')
+    ax.set_title('Scatter Plot of Gap in ATR vs. Original Profit')
+    ax.grid(True, linestyle='--', alpha=0.7)
+
+    if len(x) > 1:
+        ax.legend()
+
+    plt.tight_layout()
+    return fig
+
 if __name__ == "__main__":
     app.run()
