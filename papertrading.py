@@ -305,7 +305,7 @@ def _(
 
     trades = get_all_trades(vdate)  # or use any valid date
     dft = trades_to_dataframe(trades)
-    dft.drop(columns=["trade_date", 'last_close', 'atr30', 'open', 'close', 'limit_touched', 'limit', 'notes' , 'id' ], inplace=True)
+
     dft
     return (
         current_close_price,
@@ -335,7 +335,7 @@ def _(engine, mo, trade):
 def _(engine, mo, trade):
     _df = mo.sql(
         f"""
-        SELECT sum(profit) FROM trade
+        SELECT sum(profit), sum(profit_original) FROM trade
         """,
         engine=engine
     )
