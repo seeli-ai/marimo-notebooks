@@ -1,7 +1,8 @@
 python-dotenv
-marimo
 sqlmodel
 yfinance
 pandas
+polars
 ta
 marimo[sql]
+aider-install

@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.11.13"
+__generated_with = "0.11.21"
 app = marimo.App(width="medium")
 
 
@@ -45,7 +45,7 @@ def _():
 def _(SQLModel):
     from sqlmodel import create_engine
     import os
-    DATABASE_URL = "sqlite:///papertrading.db"
+    DATABASE_URL = "sqlite:///trading.db"
     engine = create_engine(DATABASE_URL)
     SQLModel.metadata.create_all(engine)
     return DATABASE_URL, create_engine, engine, os
@@ -343,7 +343,7 @@ def _(engine, mo, trade):
 
 
 @app.cell
-def _(engine, mo):
+def _(engine, mo, trade):
     import matplotlib.pyplot as plt
     import numpy as np
     from scipy import stats
@@ -388,7 +388,26 @@ def _(engine, mo):
         ax.legend()
 
     plt.tight_layout()
-    return fig
+    plt.show()
+    return (
+        ax,
+        equation,
+        fig,
+        intercept,
+        line_x,
+        line_y,
+        np,
+        p_value,
+        plt,
+        r_value,
+        scatter_data,
+        slope,
+        stats,
+        std_err,
+        x,
+        y,
+    )
+
 
 if __name__ == "__main__":
     app.run()
